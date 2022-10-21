@@ -3,6 +3,8 @@ const router = express.Router();
 const bcrypt = require('bcrypt')
 const User = require('../models/User')
 const jwt = require('jsonwebtoken')
+const authorization = require('../middleware/authorization')
+const uploadProfle = require('../middleware/uploadProfile')
 require('dotenv').config();
 
 // Creating a user
@@ -37,7 +39,7 @@ router.post('/', async(req, res)=>{
                 id : user.id
             }
         }
-        const token = jwt.sign(data,process.env.JWT_SECERET_KEY);
+        const token = jwt.sign(payload,process.env.JWT_SECERET_KEY);
 
         res.status(200).json({message: 'Account Created Successfully', token: token})
     } catch (error) {
@@ -79,6 +81,58 @@ router.post('/login', async(req,res)=>{
     }
 })
 
+// updating pass
+router.patch('/', authorization, async(req,res)=>{
+    const { oldPass, newPass } = req.body;
+    try {
+        const user = await User.findOne({_id:req.user_id})
 
+        const comparePass = await bcrypt.compare(oldPass, user.password);
+
+        if(!comparePass)
+            return res.status(400).json({messgae: 'Old password is incorrect'})
+        
+        const salt = bcrypt.genSaltSync(10);
+        const bcryptedPaas = bcrypt.hashSync(newPass, salt);
+
+        user.password = bcryptedPaas;
+        
+        await user.save();
+
+        return res.status(200).json({message: 'Password Updated'})
+
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({message : 'Server Error'})
+    }
+})
+
+
+// upload profile image
+router.post('/upload-profile', authorization, uploadProfle.single('profileImage'), async(req, res)=>{
+    try {
+        const user = await User.findOne({_id: req.user_id});
+
+        user.profileIamge = req.file.path;
+        await user.save();
+
+        return res.status(200).json({message: 'Profile image updated'})
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({message: 'Server Error'})
+    }
+})
+
+// get user info
+router.get('/', authorization, async(req,res)=>{
+    try {
+        const user = await User.find({_id: req.user_id}, {password: 0})
+
+        return res.status(200).json(user);
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({message: 'Server Error'})
+    }
+})
 
 module.exports = router;

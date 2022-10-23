@@ -5,7 +5,7 @@ const router = express.Router();
 
 // Advertise Service 
 router.post('/', authorization, async(req,res)=>{
-    const { title, description, pricePerHour, keywords } = req.body;
+    const { title, description, pricePerHour, keywords, city, area } = req.body;
     try {
         let service =  await Service.findOne({worker_id : req.user_id })
         if(service)
@@ -16,6 +16,10 @@ router.post('/', authorization, async(req,res)=>{
             title: title,
             description: description,
             pricePerHour: pricePerHour,
+            location : {
+                city : city,
+                area : area
+            },
             keywords: keywords
         })
 

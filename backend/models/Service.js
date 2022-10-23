@@ -18,6 +18,16 @@ const serviceSchema = new Schema({
         type: Number,
         required: true,
     },
+    location: {
+        city: {
+            type: String,
+            required: true
+        },
+        area: {
+            type: String,
+            required: true
+        }
+    },
     keywords:{
         type: [String],
         required: true,

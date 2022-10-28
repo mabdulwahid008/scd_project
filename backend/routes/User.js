@@ -47,7 +47,7 @@ router.post('/', async(req, res)=>{
         res.status(500).json({message : 'Server Error'})
     }
 })
-
+      
 // loging in user
 router.post('/login', async(req,res)=>{
     const { username, password } = req.body;

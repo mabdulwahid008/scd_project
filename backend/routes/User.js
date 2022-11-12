@@ -81,7 +81,7 @@ router.post('/login', async(req,res)=>{
     }
 })
 
-// updating pass
+// updating pass with autorization
 router.patch('/', authorization, async(req,res)=>{
     const { oldPass, newPass } = req.body;
     try {
@@ -107,7 +107,6 @@ router.patch('/', authorization, async(req,res)=>{
     }
 })
 
-
 // upload profile image
 router.post('/upload-profile', authorization, uploadProfle.single('profileImage'), async(req, res)=>{
     try {
@@ -116,7 +115,7 @@ router.post('/upload-profile', authorization, uploadProfle.single('profileImage'
         user.profileIamge = req.file.path;
         await user.save();
 
-        return res.status(200).json({message: 'Profile image updated'})
+        return res.status(200).json({success: true, message: 'Profile image updated'})
     } catch (error) {
         console.log(error.message);
         return res.status(500).json({message: 'Server Error'})
@@ -135,4 +134,44 @@ router.get('/', authorization, async(req,res)=>{
     }
 })
 
+
+// forgot pass
+// route 1 for checking user with this email exists ?
+router.post('/forget-pass', async(req, res)=>{
+    const { email } = req.body;
+    try {
+        const user = await User.findOne({email: email})
+        if(!user)
+            return res.status(404).json({message: 'User with this email dosen\'t exist'})
+
+         // generate token
+         const payload = {
+            user : {
+                id : user.id
+            }
+        }
+        const token = jwt.sign(payload, process.env.JWT_SECERET_KEY);
+        return res.status(200).json({success: true, token: token})
+
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({message: 'Server Error'})
+    } 
+})
+
+// route 2 for updating pass
+router.patch('/update-pass', authorization, async(req, res)=>{
+    const { new_pass } = req.body;
+    try {
+        // crypting pass
+        const salt = bcrypt.genSaltSync(10);
+        const bcryptedPaas = bcrypt.hashSync(new_pass, salt);
+
+        await User.updateOne({_id: req.user_id}, {password: bcryptedPaas})
+        return res.status(200).json({success: true, message: 'Password Updated'})
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({message: 'Server Error'})
+    }
+})
 module.exports = router;

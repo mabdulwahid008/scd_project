@@ -1,24 +1,42 @@
-import logo from './logo.svg';
+import { useCallback, useEffect, useState } from 'react';
+import { Route, Routes } from 'react-router-dom';
 import './App.css';
+import Login from './components/login/Login';
+import Navabar from './components/navbar/Navabar';
+import Profile from './components/profile/Profile';
 
 function App() {
+
+  const [userLoggedin, setUserLoggedin] = useState(false);
+  const [userData, setUserData] = useState({});
+
+
+  const getUserInfo = async(token)=>{
+    const response = await fetch('http://localhost:5000/user/',{
+      method: 'GET',
+      headers:{
+        'Content-Type' : 'Application/json',
+        'token' : token, 
+      }
+    })
+    const res = await response.json()
+    setUserData(res[0])
+    setUserLoggedin(true)
+  }
+
+  useEffect(()=>{
+    const token = localStorage.getItem('token')
+    getUserInfo(token)
+  }, [userLoggedin])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      {userLoggedin && <Navabar/>}
+      <Routes>
+        <Route path='/' element={userLoggedin? <div>Hello World</div> :  <Login setUserLoggedin={setUserLoggedin}/>}/>
+        <Route path='/profile' element={userLoggedin? <Profile userData={userData}/> :  <Login setUserLoggedin={setUserLoggedin}/>}/>
+      </Routes>
+    </>
   );
 }
 

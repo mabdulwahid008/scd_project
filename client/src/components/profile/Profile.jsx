@@ -5,7 +5,7 @@ import { BsCamera } from "react-icons/bs";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-function Profile({ userData }) {
+function Profile({ userData, setUserLoggedin }) {
     const [image, setImage] = useState(null)
     const [profile, setProfile] = useState(img)
     const ref = useRef();
@@ -48,12 +48,12 @@ function Profile({ userData }) {
             <div className='profile-cover'></div>
             <input ref={ref} type="file" accept='image/jpg image/png image/jpeg' onChange={onChange}/>
             <div className='profile-header'>
-                {/* <img src={profile} alt="profile" /> */}
-                <img src={'http://localhost:5000/'+userData.profile} alt="profile" />
-                <div onClick={()=>ref.current.click()}><BsCamera/></div>
-                <h3>{userData.username}</h3>
+                <img src={userData.profileIamge? 'http://localhost:5000/'+userData.profileIamge : profile} alt="profile" />
+                <div className='profile-overlay' onClick={()=>ref.current.click()}><BsCamera/></div>
+                {userData.accountType === 0? <button className='btn btn-advertise'>Advertise</button>: ''}
+                <p>{userData.username}</p>
             </div>
-        </div>
+            <p onClick={()=>{localStorage.removeItem('token'); setUserLoggedin(false)}}>LogOut</p>        </div>
     </div>
 
     <ToastContainer

@@ -1,10 +1,11 @@
-import React, { memo, useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './Login.css'
 
 function Login(props) {
     const [forgetPass, setForgetPass] = useState(false)
+    const [loading, setLoading] = useState(false)  
     const [token, setToken] = useState('')
     const [user, setUser] = useState(false)
     const [login, setLogin] = useState({username: '', password: '', email: '', new_pass: '', cnfrm_new_pass: ''})
@@ -15,6 +16,7 @@ function Login(props) {
 
     const loggin = async(e)=>{
         e.preventDefault();
+        setLoading(true)
         const response = await fetch('http://localhost:5000/user/login',{
             method : 'POST',
             headers:{
@@ -29,10 +31,11 @@ function Login(props) {
             localStorage.setItem('token', res.token)
             props.setUserLoggedin(true)
         }
+        setLoading(false)
     }
     const verify = async(e)=>{
         e.preventDefault();
-
+        setLoading(true)
         const response = await fetch('http://localhost:5000/user/forget-pass',{
             method : 'POST',
             headers:{
@@ -48,9 +51,11 @@ function Login(props) {
             setForgetPass(true)
             setToken(res.token)
         }
+        setLoading(false)
     }
     const updatePass = async(e)=>{
         e.preventDefault();
+        setLoading(true)
         if(login.new_pass !== login.cnfrm_new_pass){
             toast.error("Password doesn't match")
             return;
@@ -72,7 +77,15 @@ function Login(props) {
         }
         else
             toast.error(res.message)
+        setLoading(false)
     }
+    
+    useEffect(() => {
+        if(loading)
+            document.getElementById('btn').disabled = true;
+        else
+            document.getElementById('btn').disabled = false;
+    }, [loading])
     
     
   return (
@@ -92,7 +105,7 @@ function Login(props) {
                     <span className='span'></span>
                 </div>
                 <p onClick={()=> setForgetPass(true)}>Forgot Pass?</p>
-                <button className='btn btn-submit'>Log In</button>
+                <button className='btn btn-submit' id='btn'>{!loading? 'Log In': 'Loading...'}</button>
                 <p className='help'>New User <span>Sign Up</span></p>
             </form>
         </div>}
@@ -105,7 +118,7 @@ function Login(props) {
                     <label className='label' htmlFor="email">Username or Email</label>
                     <span className='span'></span>
                 </div>
-                <button className='btn btn-submit'>Verify</button>
+                <button className='btn btn-submit' id="btn">{!loading? 'Verify': 'Loading...'}</button>
                 <p className='help'>Got Your password <span onClick={()=>setForgetPass(false)}>Log in</span></p>
             </form>
             
@@ -124,7 +137,7 @@ function Login(props) {
                         <label className='label' htmlFor='cnfrm_new_pass'>Confirm Password</label>
                         <span className='span'></span>
                     </div>
-                    <button className='btn btn-submit'>Update Pass</button>
+                    <button className='btn btn-submit' id="btn">{!loading? 'Update Pass': 'Loading...'}</button>
                 </form>
                 </div>}
     </div>

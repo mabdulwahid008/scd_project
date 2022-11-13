@@ -53,10 +53,22 @@ label{
     border: none;
     outline: none;
     cursor: pointer;
+    letter-spacing: 1px;
+    transition: .2s ease;
+    background-color: var(--fourthColor);
+}
+.btn:hover{
+    transform: scale(.95);
 }
 .btn-submit{
     background-color: var(--thirdColor);
     color: white;
+}
+.btn-advertise{
+    background-color: var(--fourthColor);
+    color: white;
+    border-radius: 5px;
+    box-shadow: 0px 5px 20px var(--thirdColor);
 }
 
 
@@ -65,6 +77,7 @@ label{
     font-weight: 500;
     padding: 7px 7px 2px;
     border: none;
+    font-family: var(--paraFont);
     font-family: var(--paraFont);
     outline: none;
     border-bottom: 2px solid var(--secondColor);

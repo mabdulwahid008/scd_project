@@ -1,0 +1,37 @@
+.services{
+    padding: 20px 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.services-section{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+}
+.service{
+    padding: 20px;
+    width: 20%;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.26);
+    border: 1px solid var(--thirdColor);
+}
+.service>div{
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin-bottom: 20px;
+}
+.service>div>img{
+    height: 70px;
+    width: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+}

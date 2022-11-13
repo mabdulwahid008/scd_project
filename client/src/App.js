@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Login from './components/login/Login';
 import Navabar from './components/navbar/Navabar';
 import Profile from './components/profile/Profile';
+import Services from './components/services/Services';
 
 function App() {
 
@@ -26,15 +27,18 @@ function App() {
 
   useEffect(()=>{
     const token = localStorage.getItem('token')
-    getUserInfo(token)
+    if(token)
+      getUserInfo(token)
   }, [userLoggedin])
 
   return (
     <>
-      {userLoggedin && <Navabar/>}
+      {userLoggedin && <Navabar  userData={userData}/>}
       <Routes>
-        <Route path='/' element={userLoggedin? <div>Hello World</div> :  <Login setUserLoggedin={setUserLoggedin}/>}/>
-        <Route path='/profile' element={userLoggedin? <Profile userData={userData}/> :  <Login setUserLoggedin={setUserLoggedin}/>}/>
+        {/* <Route path='/' element={userLoggedin?  `${userData.accountType === 0 ? <Services/> : <Navigate to='/profile'/>}` : <Login setUserLoggedin={setUserLoggedin}/>}/> */}
+        <Route path='/' element={userLoggedin? <Services/>  : <Login setUserLoggedin={setUserLoggedin}/>}/>
+        <Route path='/profile' element={userLoggedin? <Profile userData={userData} setUserLoggedin={setUserLoggedin}/> :  <Login setUserLoggedin={setUserLoggedin}/>}/>
+        <Route path='/services' element={<Navigate to='/'/>}/>
       </Routes>
     </>
   );

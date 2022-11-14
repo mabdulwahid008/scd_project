@@ -5,6 +5,7 @@ import Login from './components/login/Login';
 import Navabar from './components/navbar/Navabar';
 import Profile from './components/profile/Profile';
 import Services from './components/services/Services';
+import Signup from './components/signup/Signup';
 
 function App() {
 
@@ -36,6 +37,7 @@ function App() {
       {userLoggedin && <Navabar  userData={userData}/>}
       <Routes>
         {/* <Route path='/' element={userLoggedin?  `${userData.accountType === 0 ? <Services/> : <Navigate to='/profile'/>}` : <Login setUserLoggedin={setUserLoggedin}/>}/> */}
+        <Route path='/signup' element={<Signup setUserLoggedin={setUserLoggedin}/>} />
         <Route path='/' element={userLoggedin? <Services/>  : <Login setUserLoggedin={setUserLoggedin}/>}/>
         <Route path='/profile' element={userLoggedin? <Profile userData={userData} setUserLoggedin={setUserLoggedin}/> :  <Login setUserLoggedin={setUserLoggedin}/>}/>
         <Route path='/services' element={<Navigate to='/'/>}/>

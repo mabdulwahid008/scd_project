@@ -1,4 +1,5 @@
 import React, { memo, useEffect, useState } from 'react'
+import { Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './Login.css'
@@ -58,6 +59,7 @@ function Login(props) {
         setLoading(true)
         if(login.new_pass !== login.cnfrm_new_pass){
             toast.error("Password doesn't match")
+            setLoading(false)
             return;
         }
 
@@ -106,7 +108,7 @@ function Login(props) {
                 </div>
                 <p onClick={()=> setForgetPass(true)}>Forgot Pass?</p>
                 <button className='btn btn-submit' id='btn'>{!loading? 'Log In': 'Loading...'}</button>
-                <p className='help'>New User <span>Sign Up</span></p>
+                <p className='help'>New User <Link to="/signup"><span>Sign Up</span></Link></p>
             </form>
         </div>}
 

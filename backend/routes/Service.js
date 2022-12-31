@@ -2,6 +2,7 @@ const express = require('express');
 const authorization = require('../middleware/authorization');
 const checkUserHasService = require('../middleware/checkUserHasService');
 const Service = require('../models/Service');
+const User = require('../models/User');
 const router = express.Router();
 
 // Geting Services
@@ -47,6 +48,10 @@ router.post('/', authorization, async(req,res)=>{
             keywords: keywords
         })
 
+        let user = await User.findOne({_id : req.user_id})
+        user.accountType = 1
+        await user.save()
+
         return res.status(200).json({message: 'Congrats! You advertise yourself'})
     } catch (error) {
         console.log(error.message);
@@ -69,6 +74,9 @@ router.get('/myservice', authorization, checkUserHasService, async(req, res)=>{
 router.delete('/', authorization, checkUserHasService, async(req,res)=>{
     try {
         await Service.deleteOne({_id : req.service_id})
+        let user = await User.findOne({_id: req.user_id})
+        user.accountType = 0;
+        await user.save();
         return res.status(200).json({message: "Deleted Successfully"})
     } catch (error) {
         console.log(error.message);

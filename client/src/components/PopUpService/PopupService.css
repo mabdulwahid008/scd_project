@@ -1,0 +1,55 @@
+.overlay{
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.429);
+    position: fixed;
+    display: flex;
+    top: 0;
+    z-index: 9;
+    justify-content: center;
+    align-items: center;
+}
+.card{
+    background-color: white;
+    width: 40%;
+    border-radius: 10px;
+    padding: 40px 30px;
+}
+#close-btn{
+    font-size: 18px;
+    transition: .25s ease;
+    cursor: pointer;
+}
+#close-btn:hover{
+    color: var(--fourthColor);
+}
+.card > form {
+    margin-top: 30px;
+}
+.card > form > .row {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    position: static;
+}
+.card > form > .row > div:nth-of-type(1){
+    position: relative;
+    width: 33%;
+}
+.card > form > .row > div:nth-of-type(1) > input{
+    width: 90% ;
+}
+.row > .inner-row {
+    width: 70%;
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    position: static;
+}
+.inner-row> div{
+    position: relative;
+    width: 50%;
+}
+.inner-row > div > input {
+    width: 90%;
+}

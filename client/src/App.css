@@ -80,6 +80,9 @@ label{
     font-family: var(--paraFont);
     font-family: var(--paraFont);
     outline: none;
+    z-index: 99;
+    background-color: transparent;
+    resize: none;
     border-bottom: 2px solid var(--secondColor);
 }
 .span{
@@ -111,6 +114,7 @@ label{
     position: absolute;
     top: 2px;
     left: 5px;
+    z-index: 9;
     transition: top .25s ease,
                 left .25s ease,
                 font-size .25s ease;

@@ -1,13 +1,18 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import './Profile.css'
 import img from '../../images/profile.jpg'
 import { BsCamera } from "react-icons/bs";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { BsFillTrashFill } from "react-icons/bs";
+import { FaRegEdit } from "react-icons/fa";
+import PopupService from '../PopUpService/PopupService';
 
 function Profile({ userData, setUserLoggedin }) {
     const [image, setImage] = useState(null)
     const [profile, setProfile] = useState(img)
+    const [myService, setMyService] = useState(null)
+    const [popup, setPopup] = useState(true)
     const ref = useRef();
 
     const onChange = async(e)=>{
@@ -41,6 +46,23 @@ function Profile({ userData, setUserLoggedin }) {
             }
         })
     }
+
+    const getMyService = async() =>{
+        const response = await fetch('http://localhost:5000/service/myservice/',{
+            method: 'GET',
+            headers:{
+              'Content-Type' : 'Application/json',
+              'token' : localStorage.getItem('token'), 
+            }
+          })
+          const res = await response.json()
+          setMyService(res)
+    }
+
+    useEffect(() => {
+     getMyService()
+    }, [])
+    
   return (
       <>
     <div className='profile'>
@@ -53,21 +75,53 @@ function Profile({ userData, setUserLoggedin }) {
                 {userData.accountType === 0? <button className='btn btn-advertise'>Advertise</button>: ''}
                 <p>{userData.username}</p>
             </div>
-            <p onClick={()=>{localStorage.removeItem('token'); setUserLoggedin(false)}}>LogOut</p>        </div>
+
+            {myService &&<> 
+                <h5>My Advertisement</h5>
+                <div className='myservice'>
+                    <div className='head'>
+                        <div className='service-content'>
+                            <h5>Title:</h5>
+                            <p>{myService.title}</p>
+                        </div>
+                        <div className='service-content'>
+                            <h5>Price Per Hour:</h5>
+                            <p>{myService.pricePerHour} Rs</p>
+                        </div>
+                    </div>
+                    <div className='service-content'>
+                            <h5>Description:</h5>
+                            <p>{myService.description}</p>
+                    </div>
+                    <div className='service-content'>
+                            <h5>Location:</h5>
+                            <p>{myService.location.area}, {myService.location.city}</p>
+                    </div>
+                    <div className='head'>
+                        <div className='service-content'>
+                                <h5>Tags:</h5>
+                                <span className='keywords'>{myService.keywords.map((tag)=>{
+                                    return <p>{tag[0]} </p>
+                                })}</span>
+                        </div>
+                        <div className='actions'>
+                            <FaRegEdit onClick={()=>setPopup(true)}/>
+                            <BsFillTrashFill />
+                        </div>
+                    </div>
+                </div>
+            </>}
+
+            <h5>My Bookings</h5>
+            <div className='bookings'>
+                <p>You have currently no bookings</p>
+            </div>
+            <button className='btn' onClick={()=>{localStorage.removeItem('token'); setUserLoggedin(false)}}>LogOut</button>        
+            </div>
     </div>
 
-    <ToastContainer
-                position="top-right"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss={false}
-                draggable={false}
-                pauseOnHover
-                theme="light"
-                />  
+    {popup && <PopupService setPopup={setPopup} />}
+    <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss={false} draggable={false} pauseOnHover theme="light" />  
     </>
   )
 }

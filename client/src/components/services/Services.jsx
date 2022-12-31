@@ -21,7 +21,7 @@ function Services() {
   return (
     <div className='services'>
         <div className="search-form">
-            
+           <input className='search-bar' type="text" placeholder='Search Services'/> 
         </div>
         
         <div className='services-section'>

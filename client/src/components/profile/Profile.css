@@ -9,6 +9,7 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    gap: 20px;
 }
 .profile-cover{
     height: 170px;
@@ -19,12 +20,12 @@
 }
 .profile-body>input{
     z-index: 0;
-    margin-top: -30px;
+    margin-top: -50px;
     margin-left: 30%;
     /* opacity: 0; */
 }
 .profile-header{
-    margin: -50px 0px 0px 0px;
+    margin: -70px 0px 0px 0px;
     z-index: 2;
     padding: 0px 80px;
     position: relative
@@ -60,10 +61,63 @@
     font-size: 25px;
     font-weight: 700;
     text-transform: capitalize;
+    margin-left: 20px;
 }
 .profile-header>button{
     position: absolute;
     right: 50px;
     top: 80px;
+}
+.myservice{
+    border: 1px solid var(--secondColor);
+    height: auto;
+    width: 95%;
+    border-radius: 10px;
+    padding: 15px 20px;
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+    margin-top: -15px;
+}
+.myservice > .head {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row !important;
+    align-items: flex-end;
+}
+.service-content {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.keywords{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+.actions {
+    display: flex;
+    gap: 10px;
+}
+.actions > svg{
+    font-size: 18px;
+    transition: .25s ease;
+    cursor: pointer;
+}
+.actions > svg:nth-of-type(1):hover{
+    color: var(--firstColor);
+}
+.actions > svg:nth-of-type(2):hover{
+    color: var(--fourthColor);
+}
+
+.bookings {
+    border: 1px solid var(--secondColor);
+    height: auto;
+    min-height: 70px;
+    width: 95%;
+    border-radius: 10px;
+    padding: 15px 20px;
+    margin-top: -15px;
 }
 

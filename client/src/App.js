@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import img from './images/profile.jpg';
 import './App.css';
 import Login from './components/login/Login';
 import Navabar from './components/navbar/Navabar';
@@ -42,6 +44,19 @@ function App() {
         <Route path='/profile' element={userLoggedin? <Profile userData={userData} setUserLoggedin={setUserLoggedin}/> :  <Login setUserLoggedin={setUserLoggedin}/>}/>
         <Route path='/services' element={<Navigate to='/'/>}/>
       </Routes>
+
+      <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss={false}
+                draggable={false}
+                pauseOnHover
+                theme="light"
+                />  
     </>
   );
 }

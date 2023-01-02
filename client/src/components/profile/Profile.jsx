@@ -12,7 +12,8 @@ function Profile({ userData, setUserLoggedin }) {
     const [image, setImage] = useState(null)
     const [profile, setProfile] = useState(img)
     const [myService, setMyService] = useState(null)
-    const [popup, setPopup] = useState(true)
+    const [popup, setPopup] = useState(false)
+    const [serviceAdded, setServiceAdded] = useState(false)
     const ref = useRef();
 
     const onChange = async(e)=>{
@@ -48,7 +49,7 @@ function Profile({ userData, setUserLoggedin }) {
     }
 
     const getMyService = async() =>{
-        const response = await fetch('http://localhost:5000/service/myservice/',{
+        const response = await fetch('http://localhost:5000/service/myservice',{
             method: 'GET',
             headers:{
               'Content-Type' : 'Application/json',
@@ -56,12 +57,13 @@ function Profile({ userData, setUserLoggedin }) {
             }
           })
           const res = await response.json()
-          setMyService(res)
+          if(response.status === 200)
+              setMyService(res)
     }
 
     useEffect(() => {
      getMyService()
-    }, [])
+    }, [serviceAdded])
     
   return (
       <>
@@ -72,11 +74,11 @@ function Profile({ userData, setUserLoggedin }) {
             <div className='profile-header'>
                 <img src={userData.profileIamge? 'http://localhost:5000/'+userData.profileIamge : profile} alt="profile" />
                 <div className='profile-overlay' onClick={()=>ref.current.click()}><BsCamera/></div>
-                {userData.accountType === 0? <button className='btn btn-advertise'>Advertise</button>: ''}
+                {userData.accountType === 0 && !serviceAdded && <button className='btn btn-advertise' onClick={()=>{setPopup(true); localStorage.setItem('popup', 0) } }>Advertise</button>}
                 <p>{userData.username}</p>
             </div>
 
-            {myService &&<> 
+            {myService && <div> 
                 <h5>My Advertisement</h5>
                 <div className='myservice'>
                     <div className='head'>
@@ -101,16 +103,16 @@ function Profile({ userData, setUserLoggedin }) {
                         <div className='service-content'>
                                 <h5>Tags:</h5>
                                 <span className='keywords'>{myService.keywords.map((tag)=>{
-                                    return <p>{tag[0]} </p>
+                                    return <p>{tag} </p>
                                 })}</span>
                         </div>
                         <div className='actions'>
-                            <FaRegEdit onClick={()=>setPopup(true)}/>
+                            <FaRegEdit onClick={()=>{setPopup(true); localStorage.setItem('popup', 1)}}/>
                             <BsFillTrashFill />
                         </div>
                     </div>
                 </div>
-            </>}
+            </div>}
 
             <h5>My Bookings</h5>
             <div className='bookings'>
@@ -120,7 +122,7 @@ function Profile({ userData, setUserLoggedin }) {
             </div>
     </div>
 
-    {popup && <PopupService setPopup={setPopup} />}
+    {popup && <PopupService setPopup={setPopup} setServiceAdded={setServiceAdded} myService={myService? {title: myService.title, description: myService.description, pricePerHour: myService.pricePerHour, city: myService.location.city, area: myService.location.area, keywords: myService.keywords}: {title: '', description: '', pricePerHour: '', city: '', area: '', keywords: []}}/>}
     <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss={false} draggable={false} pauseOnHover theme="light" />  
     </>
   )

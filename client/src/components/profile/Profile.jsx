@@ -61,7 +61,26 @@ function Profile({ userData, setUserLoggedin }) {
               setMyService(res)
     }
 
+    const deleteMyService =  async() => {
+        const response = await fetch('http://localhost:5000/service',{
+            method: 'DELETE',
+            headers:{
+              'Content-Type' : 'Application/json',
+              'token' : localStorage.getItem('token'), 
+            }
+          })
+          const res = await response.json()
+          if(response.status === 200){
+                toast.success(res.message)
+                setMyService(null)
+                setServiceAdded(false)
+            }
+          else
+            toast.error(res.message)
+    }
+
     useEffect(() => {
+        setMyService(null)
      getMyService()
     }, [serviceAdded])
     
@@ -74,7 +93,7 @@ function Profile({ userData, setUserLoggedin }) {
             <div className='profile-header'>
                 <img src={userData.profileIamge? 'http://localhost:5000/'+userData.profileIamge : profile} alt="profile" />
                 <div className='profile-overlay' onClick={()=>ref.current.click()}><BsCamera/></div>
-                {userData.accountType === 0 && !serviceAdded && <button className='btn btn-advertise' onClick={()=>{setPopup(true); localStorage.setItem('popup', 0) } }>Advertise</button>}
+                {!myService && !serviceAdded && <button className='btn btn-advertise' onClick={()=>{setPopup(true); localStorage.setItem('popup', 0) } }>Advertise</button>}
                 <p>{userData.username}</p>
             </div>
 
@@ -108,7 +127,7 @@ function Profile({ userData, setUserLoggedin }) {
                         </div>
                         <div className='actions'>
                             <FaRegEdit onClick={()=>{setPopup(true); localStorage.setItem('popup', 1)}}/>
-                            <BsFillTrashFill />
+                            <BsFillTrashFill onClick={deleteMyService}/>
                         </div>
                     </div>
                 </div>

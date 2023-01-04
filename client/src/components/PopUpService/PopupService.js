@@ -28,29 +28,29 @@ function PopupService({ setPopup, setServiceAdded, myService }) {
     const editService = async( e ) => {
         e.preventDefault()
         console.log('edit service');
-        // let arr = []
-        // for (let i = 0; i < service.keywords.length; i++) {
-        //     arr[i] = service.keywords[i].value
-        // }
-        // service.keywords = arr;
+        let arr = []
+        for (let i = 0; i < service.keywords.length; i++) {
+            arr[i] = service.keywords[i].value
+        }
+        service.keywords = arr;
 
-        // const response = await fetch('http://localhost:5000/service',{
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'Application/json',
-        //         token: localStorage.getItem('token')
-        //     },
-        //     body: JSON.stringify(service)
-        // })
-        // const res = await response.json()
+        const response = await fetch('http://localhost:5000/service',{
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'Application/json',
+                token: localStorage.getItem('token')
+            },
+            body: JSON.stringify(service)
+        })
+        const res = await response.json()
 
-        // if(response.status === 200){
-        //     toast.success(res.message);
-        //     setServiceAdded(true)
-        //     setPopup(false)
-        // }
-        // else
-        //     toast.error(res.message);
+        if(response.status === 200){
+            toast.success(res.message);
+            setServiceAdded(true)
+            setPopup(false)
+        }
+        else
+            toast.error(res.message);
     }
     const addService = async( e ) => {
         e.preventDefault()

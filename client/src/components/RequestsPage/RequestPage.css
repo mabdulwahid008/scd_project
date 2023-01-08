@@ -1,0 +1,40 @@
+.requestPage{
+    padding: 40px 150px;
+}
+.requestPage > p{
+    margin-top: 20px;
+}
+.requests{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+.requests >div{
+    border: 1px solid var(--firstColor);
+    padding: 10px 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+}
+.requests > div > div:nth-of-type(1){
+    width: 80%;
+}
+.requests> div > div:nth-of-type(2){
+   align-self: flex-end;
+}
+.requests> div >div >button{
+    font-size: 12px;
+    padding: 10px 15px;
+    box-shadow: none;
+}
+.requests > div > img{
+    align-self: flex-start;
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 50%;
+}

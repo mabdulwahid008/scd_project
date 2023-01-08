@@ -3,13 +3,15 @@
     justify-content: space-between;
     padding: 12px 50px 10px;
     height: 40px;
+    background: var(--gradient);
     border-bottom: 1px solid rgb(170, 170, 170);
 }
 .navbar>a>h1{
     cursor: pointer;
     font-size: 30px;
     letter-spacing: 1px;
-    color: var(--firstColor);
+    /* color: var(--firstColor); */
+    color: white;
 }
 .nav{
     list-style-type: none;

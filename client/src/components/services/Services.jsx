@@ -36,8 +36,7 @@ function Services() {
                     </div>
                     <h3>{service.title}</h3>
                     <div>
-                        <button className='btn'>View</button>
-                        <button className='btn btn-submit'>Book</button>
+                        <button className='btn btn-submit'>Message</button>
                     </div>
                 </div>
         })}
@@ -52,8 +51,7 @@ function Services() {
                     </div>
                     <h3>{service.title}</h3>
                     <div>
-                        <button className='btn'>View</button>
-                        <button className='btn btn-submit'>Book</button>
+                        <button className='btn btn-submit'>Message</button>
                     </div>
                 </div>
         })}

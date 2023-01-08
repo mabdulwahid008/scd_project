@@ -24,6 +24,7 @@ connectToMongoDB()
 //Routes
 app.use('/user', require('./routes/User'))
 app.use('/service', require('./routes/Service'))
+app.use('/request', require('./routes/Requests'))
 
 app.get('/', (req,res)=>{
     res.send('Hello World')

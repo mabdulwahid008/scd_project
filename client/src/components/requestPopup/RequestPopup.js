@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import './RequestPopup.css'
 import { CiCircleRemove } from "react-icons/ci";
-import { io } from 'socket.io-client'
+import { toast } from 'react-toastify'
 
 function RequestPopup({ setRequest }) {
     const [requestData, setRequestData] = useState({title: '', description: ''})
@@ -10,15 +10,26 @@ function RequestPopup({ setRequest }) {
         setRequestData({...requestData, [e.target.name]: e.target.value})
     }
 
-    const socket = io('http://localhost:3001')
     
-    socket.on('send', (data)=>{
-        console.log(data);
-    })
-    const onSubmit = ( e ) => {
+    const onSubmit = async( e ) => {
         e.preventDefault();
        
-        socket.emit('request', requestData)
+        const response = await fetch('http://localhost:5000/request',{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'Application/json',
+                token: localStorage.getItem('token')
+            },
+            body: JSON.stringify(requestData)
+        })
+        const res = await response.json()
+
+        if(response.status === 200){
+            toast.success(res.message)
+            setRequestData({title: '', description: ''})
+            setRequest(false)
+        }else
+            toast.error(res.message);
         
     }
  

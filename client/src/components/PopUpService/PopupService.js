@@ -123,7 +123,7 @@ function PopupService({ setPopup, setServiceAdded, myService }) {
                         </div>
                 </div>
                 <div>
-                    <textarea className='input' defaultValue={service.description} name="description" id="" cols="30" rows="3" placeholder=' ' onChange={onChange}></textarea>
+                    <textarea style={{marginTop: 5}} className='input' defaultValue={service.description} name="description" id="" cols="30" rows="3" placeholder=' ' onChange={onChange}></textarea>
                     <label className='label' htmlFor='description'>Description </label>
                 </div>
                 <div>

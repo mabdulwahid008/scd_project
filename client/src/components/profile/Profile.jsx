@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { BsFillTrashFill } from "react-icons/bs";
 import { FaRegEdit } from "react-icons/fa";
 import PopupService from '../PopUpService/PopupService';
+import RequestPopup from '../requestPopup/RequestPopup';
 
 function Profile({ userData, setUserLoggedin }) {
     const [image, setImage] = useState(null)
@@ -14,6 +15,7 @@ function Profile({ userData, setUserLoggedin }) {
     const [myService, setMyService] = useState(null)
     const [popup, setPopup] = useState(false)
     const [serviceAdded, setServiceAdded] = useState(false)
+    const [request, setRequest] = useState(false)
     const ref = useRef();
 
     const onChange = async(e)=>{
@@ -91,9 +93,14 @@ function Profile({ userData, setUserLoggedin }) {
             <div className='profile-cover'></div>
             <input ref={ref} type="file" accept='image/jpg image/png image/jpeg' onChange={onChange}/>
             <div className='profile-header'>
-                <img src={userData.profileIamge? 'http://localhost:5000/'+userData.profileIamge : profile} alt="profile" />
-                <div className='profile-overlay' onClick={()=>ref.current.click()}><BsCamera/></div>
-                {!myService && !serviceAdded && <button className='btn btn-advertise' onClick={()=>{setPopup(true); localStorage.setItem('popup', 0) } }>Advertise</button>}
+                <div>
+                    <img src={userData.profileIamge? 'http://localhost:5000/'+userData.profileIamge : profile} alt="profile" />
+                    <div className='profile-overlay' onClick={()=>ref.current.click()}><BsCamera/></div>
+                    <div>
+                        {!myService && !serviceAdded && <button className='btn btn-advertise' onClick={()=>{setPopup(true); localStorage.setItem('popup', 0) } }>Advertise</button>}
+                        <button className='btn btn-submit' onClick={()=>setRequest(true)}>Request</button>
+                    </div>
+                </div>
                 <p>{userData.username}</p>
             </div>
 
@@ -141,6 +148,7 @@ function Profile({ userData, setUserLoggedin }) {
             </div>
     </div>
 
+    {request && <RequestPopup setRequest={setRequest}/>}
     {popup && <PopupService setPopup={setPopup} setServiceAdded={setServiceAdded} myService={myService? {title: myService.title, description: myService.description, pricePerHour: myService.pricePerHour, city: myService.location.city, area: myService.location.area, keywords: myService.keywords}: {title: '', description: '', pricePerHour: '', city: '', area: '', keywords: []}}/>}
     <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss={false} draggable={false} pauseOnHover theme="light" />  
     </>

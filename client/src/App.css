@@ -63,6 +63,8 @@ label{
 .btn-submit{
     background-color: var(--thirdColor);
     color: white;
+    border-radius: 5px;
+    box-shadow: 0px 5px 20px var(--secondColor);
 }
 .btn-advertise{
     background-color: var(--fourthColor);

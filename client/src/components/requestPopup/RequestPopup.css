@@ -1,0 +1,15 @@
+.request {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.request > div {
+    margin-top: 0px;
+    position: relative;
+}
+.request > div > .input {
+    width: 95%;
+}
+.request>button{
+    margin-top: 20px;
+}

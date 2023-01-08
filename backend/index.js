@@ -3,6 +3,12 @@ const cors = require('cors');
 require('dotenv').config();
 const connectToMongoDB = require('./db')
 
+const io = require('socket.io')(3001,{
+    cors:{
+        origin: ['http://localhost:3000']
+    }
+})
+
 // Create express App
 const app = express();
 
@@ -25,4 +31,13 @@ app.get('/', (req,res)=>{
 
 app.listen(process.env.PORT, ()=>{
     console.log(`App is listening on  port ${process.env.PORT}`);
+})
+
+
+io.on('connection', (socket)=>{
+    console.log(socket.id);
+    socket.on('request', (data) => {
+        console.log(data);
+        socket.broadcast.emit('send', data)
+    })
 })

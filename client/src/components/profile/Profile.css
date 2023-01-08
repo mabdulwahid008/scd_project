@@ -27,14 +27,26 @@
 .profile-header{
     margin: -70px 0px 0px 0px;
     z-index: 2;
-    padding: 0px 80px;
-    position: relative
+    padding: 0px 30px;
 }
-.profile-header>img{
+.profile-header>div{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+}
+.profile-header>div>img{
     height: 150px;
     width: 150px;
     object-fit: cover;
     border-radius: 50%;
+}
+.profile-header>div>div:nth-of-type(2){
+    margin-top: 70px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 .profile-overlay{
     display: flex;
@@ -44,7 +56,7 @@
     height: 150px;
     width: 150px;
     border-radius: 50%;
-    margin-top: -154px;
+    /* margin-top: -154px; */
     position: absolute;
     cursor: pointer;
     opacity: 0;
@@ -88,7 +100,7 @@
 .service-content {
     display: flex;
     gap: 10px;
-    align-items: center;
+    align-items: flex-start;
 }
 .keywords{
     display: flex;

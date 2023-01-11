@@ -15,8 +15,23 @@ const requestSchema = new Schema({
             type: String
         }
     },
+    // message: [
+    //     {
+    //         bid: {
+    //             type: String,
+    //         },
+    //         worker_id : {
+    //             type: mongoose.Schema.Types.ObjectId,
+    //             ref: 'user'
+    //         }
+    //     }
+    // ],
     message : {
-        type: [Object]
+        type: String,
+    },
+    worker_id : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user'
     }
 })
 

@@ -26,9 +26,6 @@ app.use('/user', require('./routes/User'))
 app.use('/service', require('./routes/Service'))
 app.use('/request', require('./routes/Requests'))
 
-app.get('/', (req,res)=>{
-    res.send('Hello World')
-})
 
 app.listen(process.env.PORT, ()=>{
     console.log(`App is listening on  port ${process.env.PORT}`);

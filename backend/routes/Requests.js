@@ -23,9 +23,17 @@ router.post('/',authorization, async(req, res)=>{
 
 router.get('/', authorization, async(req, res)=>{
     try {
-        console.log(req.user_id);
         const request = await Request.find({}).populate("reuestedAccountId", "username")
-        // const requests = request.filter((req)=> {console.log(req.reuestedAccountId._id.equals(req.user_id))})
+        return res.status(200).json(request)
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({message: 'Server Error'})
+    }
+})
+
+router.get('/myrequests', authorization, async(req, res)=>{
+    try {
+        const request = await Request.find({}).populate("worker_id", "username")
         return res.status(200).json(request)
     } catch (error) {
         console.log(error.message);
@@ -34,10 +42,14 @@ router.get('/', authorization, async(req, res)=>{
 })
 
 router.patch('/', authorization, async(req, res)=>{
-    const { message, _id } = req.body;
+    const { bid, req_id, worker_id } = req.body;
     try {
-        const request = await Request.findOne({_id: _id})
-        // have to work 
+        const request = await Request.findOne({_id: req_id})
+        
+        request.message = bid;
+        request.worker_id = worker_id;
+        await request.save();
+        
 
         return res.status(200).json({message: 'Message Sent'})
     } catch (error) {

@@ -3,7 +3,7 @@ import './RequestPage.css'
 import profile from '../../images/profile.jpg'
 import BidPopup from '../bidPopup/BidPopup'
 
-function RequestPage() {
+function RequestPage({ userData }) {
     const [requests, setRequests] = useState(null)
     const [bidPopup, setBidPopup] = useState(false)
     
@@ -17,9 +17,10 @@ function RequestPage() {
             },
         })
         const res = await response.json()
-
-        if(response.status === 200)
-            setRequests(res)
+        if(response.status === 200){
+            const filter = res.filter((r)=>{ return r.reuestedAccountId._id !== userData._id})
+            setRequests(filter)
+        }
         else
             console.log(res.message);
     }
@@ -31,7 +32,7 @@ function RequestPage() {
   return (<>
     <div className='requestPage'>
         <h3>New Requests</h3>
-        {!requests && <p>No Request Found</p>}
+        {!requests || requests.length === 0 && <p>No Request Found</p>}
         {requests && <div className='requests'>
             {requests.map((req)=>{
                 return (
@@ -42,14 +43,14 @@ function RequestPage() {
                             <p>{req.request.description}</p>
                         </div>
                         <div>
-                            <button className='btn btn-submit' onClick={()=>{setBidPopup(true); localStorage.setItem('requestTitle', req.request.title);  localStorage.setItem('requestDesc', req.request.description);  }}>Place Bid</button>
+                            <button className='btn btn-submit' onClick={()=>{setBidPopup(true); localStorage.setItem('requestTitle', req.request.title);  localStorage.setItem('requestDesc', req.request.description); localStorage.setItem('requestID', req._id); }}>Place Bid</button>
                         </div>
                     </div>
                 )
             })}
         </div>}
     </div>
-    {bidPopup && <BidPopup setBidPopup={setBidPopup} />}
+    {bidPopup && <BidPopup setBidPopup={setBidPopup} userData={userData}/>}
     </>
   )
 }

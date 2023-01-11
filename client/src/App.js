@@ -41,7 +41,7 @@ function App() {
       <Routes>
         {/* <Route path='/' element={userLoggedin?  `${userData.accountType === 0 ? <Services/> : <Navigate to='/profile'/>}` : <Login setUserLoggedin={setUserLoggedin}/>}/> */}
         <Route path='/signup' element={<Signup setUserLoggedin={setUserLoggedin}/>} />
-        <Route path='/requests' element={<RequestPage  />} />
+        <Route path='/requests' element={<RequestPage userData={userData} />} />
         <Route path='/' element={userLoggedin? <Services/>  : <Login setUserLoggedin={setUserLoggedin}/>}/>
         <Route path='/profile' element={userLoggedin? <Profile userData={userData} setUserLoggedin={setUserLoggedin}/> :  <Login setUserLoggedin={setUserLoggedin}/>}/>
         <Route path='/services' element={<Navigate to='/'/>}/>

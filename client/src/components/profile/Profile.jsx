@@ -13,6 +13,7 @@ function Profile({ userData, setUserLoggedin }) {
     const [image, setImage] = useState(null)
     const [profile, setProfile] = useState(img)
     const [myService, setMyService] = useState(null)
+    const [myRequests, setMyRequests] = useState(null)
     const [popup, setPopup] = useState(false)
     const [serviceAdded, setServiceAdded] = useState(false)
     const [request, setRequest] = useState(false)
@@ -50,6 +51,19 @@ function Profile({ userData, setUserLoggedin }) {
         })
     }
 
+    const getMyRequests = async() =>{
+        const response = await fetch('http://localhost:5000/request/myrequests',{
+            method: 'GET',
+            headers:{
+              'Content-Type' : 'Application/json',
+              'token' : localStorage.getItem('token'), 
+            }
+          })
+          const res = await response.json()
+          if(response.status === 200)
+            setMyRequests(res)
+            console.log(res);
+    }
     const getMyService = async() =>{
         const response = await fetch('http://localhost:5000/service/myservice',{
             method: 'GET',
@@ -84,6 +98,7 @@ function Profile({ userData, setUserLoggedin }) {
     useEffect(() => {
         setMyService(null)
      getMyService()
+     getMyRequests()
     }, [serviceAdded])
     
   return (
@@ -103,6 +118,26 @@ function Profile({ userData, setUserLoggedin }) {
                 </div>
                 <p>{userData.username}</p>
             </div>
+
+            {myRequests && <div>
+                <h5>My Requests</h5>
+                <div className='myservice'>
+                    {myRequests.reverse().map((req, index)=>{
+                        return <div>
+                            <h5>{index+1}-  {req.request.title}</h5>
+                            <p>{req.request.description.substr(0, 150)}...</p>
+                            {req.message && <div style={{display:'flex', gap: 10, marginTop: 10}}>
+                                <img src={img} style={{height: 45, width: 45, borderRadius:'50%'}}/>
+                                <div>
+                                    <h5>{req.worker_id.username}</h5>
+                                    <p>{req.message}</p>
+                                </div>
+                            </div>}
+                            <hr  style={{marginTop:10}}/>
+                        </div>
+                    })}
+                </div>
+            </div>}
 
             {myService && <div> 
                 <h5>My Advertisement</h5>

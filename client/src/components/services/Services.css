@@ -21,13 +21,16 @@
     gap: 20px;
     flex-wrap: wrap;
     justify-content: center;
-    align-items: flex-start;
+    align-items: stretch;
     width: 100%;
 }
 .service{
     padding: 20px 10px 0px;
     width: 20%;
     border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     background-color: rgba(255, 255, 255, 0.26);
     border: 1px solid var(--thirdColor);
 }

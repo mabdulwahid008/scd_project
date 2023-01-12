@@ -1,0 +1,23 @@
+.card-msg{
+    width: 30% !important;
+    padding: 10px;
+}
+.message-body{
+    height: 200px;
+    overflow: auto;
+    background-color: rgb(238, 255, 255);
+}
+.message-field{
+    margin-top: 10px;
+}
+.message-field >form {
+    flex-direction: row;
+}
+.message-field > form > div {
+    width: 80%;
+}
+.message-field > form > button{
+    box-shadow: none;
+    font-size: 14px;
+    padding: 7px 15px;
+}

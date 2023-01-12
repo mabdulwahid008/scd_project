@@ -9,8 +9,14 @@ import Profile from './components/profile/Profile';
 import Services from './components/services/Services';
 import Signup from './components/signup/Signup';
 import RequestPage from './components/RequestsPage/RequestPage';
+import io from 'socket.io-client'
 
 function App() {
+
+  const socket = io("http://localhost:3001")
+  socket.on("connect",()=>{
+    console.log("connected");
+  })
 
   const [userLoggedin, setUserLoggedin] = useState(false);
   const [userData, setUserData] = useState({});
@@ -42,7 +48,7 @@ function App() {
         {/* <Route path='/' element={userLoggedin?  `${userData.accountType === 0 ? <Services/> : <Navigate to='/profile'/>}` : <Login setUserLoggedin={setUserLoggedin}/>}/> */}
         <Route path='/signup' element={<Signup setUserLoggedin={setUserLoggedin}/>} />
         <Route path='/requests' element={<RequestPage userData={userData} />} />
-        <Route path='/' element={userLoggedin? <Services/>  : <Login setUserLoggedin={setUserLoggedin}/>}/>
+        <Route path='/' element={userLoggedin? <Services socket={socket}/>  : <Login setUserLoggedin={setUserLoggedin}/>}/>
         <Route path='/profile' element={userLoggedin? <Profile userData={userData} setUserLoggedin={setUserLoggedin}/> :  <Login setUserLoggedin={setUserLoggedin}/>}/>
         <Route path='/services' element={<Navigate to='/'/>}/>
       </Routes>

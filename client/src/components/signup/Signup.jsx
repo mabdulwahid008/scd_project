@@ -121,7 +121,7 @@ function Signup({ setUserLoggedin }) {
             </form>}
             {formState===2 && <form onSubmit={creatUser}>
                 <div>
-                    <input className='input' type="text" id='phone' name='phone' placeholder=' ' value={userData.phone} required onChange={onChange}/>
+                    <input className='input' type="number" id='phone' name='phone' placeholder=' ' value={userData.phone} required onChange={onChange}/>
                     <label className='label' htmlFor="phone">Phone</label>
                     <span className='span'></span>
                 </div>

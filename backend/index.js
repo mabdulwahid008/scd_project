@@ -34,8 +34,10 @@ app.listen(process.env.PORT, ()=>{
 
 io.on('connection', (socket)=>{
     console.log(socket.id);
-    socket.on('request', (data) => {
-        console.log(data);
-        socket.broadcast.emit('send', data)
+    socket.removeAllListeners()
+    
+    socket.on('msg', (msg) => {
+        // console.log(msg);
+        socket.broadcast.emit('receive', msg)
     })
 })

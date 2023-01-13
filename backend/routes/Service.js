@@ -17,10 +17,9 @@ router.get('/', async(req, res)=>{
 })
 
 // Get Service with the keywords
-router.get('/tags', async(req,res)=>{
-    const { tag } = req.body;
+router.get('/tags/:id', async(req,res)=>{
     try {
-        const services = await Service.find({keywords : tag}).populate("worker_id", "username phone profileIamge");
+        const services = await Service.find({keywords : req.params.id}).populate("worker_id", "username phone profileIamge");
         res.status(200).send(services)
     } catch (error) {
         console.log(error.message);

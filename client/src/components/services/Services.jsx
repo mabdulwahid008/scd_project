@@ -3,8 +3,9 @@ import './Services.css'
 import profile from '../../images/profile.jpg'
 import MessagePopup from '../messagePopup/MessagePopup'
 
-function Services({ socket }) {
+function Services({ userData, socket }) {
     const [services, setServices] = useState([])
+    const [search, setSearch] = useState('')
     const [messagePopup, setMessagePopup] = useState(false)
 
     const fetchServices = async()=>{
@@ -15,7 +16,21 @@ function Services({ socket }) {
             }
         })
         const res = await response.json()
-        setServices(res)
+        const filter = res.filter((r)=>{return r.worker_id._id !== userData._id})
+        setServices(filter)
+    }
+
+    const searchService = async( e ) => {
+        e.preventDefault();
+        const response = await fetch(`http://localhost:5000/service/tags/${search}`,{
+            method: 'GET',
+            headers: {
+                'Content-Type' : 'Application/json'
+            },
+        })
+        const res = await response.json()
+        const filter = res.filter((r)=>{return r.worker_id._id !== userData._id})
+        setServices(filter)
     }
     useEffect(()=>{
         fetchServices()
@@ -23,10 +38,15 @@ function Services({ socket }) {
   return (<>
     <div className='services'>
         <div className="search-form">
-           <input className='search-bar' type="text" placeholder='Search Services'/> 
+            <form onSubmit={searchService}>
+                <input className='search-bar' type="text" placeholder='Search Services' onChange={(e)=>{setSearch(e.target.value)}}/> 
+            </form>
+                
         </div>
         
         <div className='services-section'>
+            {services.length === 0 && <p>No service found with this input</p>}
+        {services && <>
         {services.map((service)=>{
             return <div className='service' key={service._id}>
                     <div>
@@ -42,7 +62,7 @@ function Services({ socket }) {
                     </div>
                 </div>
         })}
-       
+      </> }
         </div>
     </div>
     {messagePopup && <MessagePopup setMessagePopup={setMessagePopup} socket={socket}/>}

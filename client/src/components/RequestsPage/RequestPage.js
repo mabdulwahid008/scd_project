@@ -18,7 +18,7 @@ function RequestPage({ userData }) {
         })
         const res = await response.json()
         if(response.status === 200){
-            const filter = res.filter((r)=>{ return r.reuestedAccountId._id !== userData._id})
+            const filter = res.filter((r)=>{ return ((r.reuestedAccountId._id !== userData._id) && (!r.message))})
             setRequests(filter)
         }
         else

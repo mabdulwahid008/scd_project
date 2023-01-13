@@ -13,7 +13,7 @@ function Profile({ userData, setUserLoggedin }) {
     const [image, setImage] = useState(null)
     const [profile, setProfile] = useState(img)
     const [myService, setMyService] = useState(null)
-    const [myRequests, setMyRequests] = useState(null)
+    const [myRequests, setMyRequests] = useState([])
     const [popup, setPopup] = useState(false)
     const [serviceAdded, setServiceAdded] = useState(false)
     const [request, setRequest] = useState(false)
@@ -60,9 +60,11 @@ function Profile({ userData, setUserLoggedin }) {
             }
           })
           const res = await response.json()
-          if(response.status === 200)
-            setMyRequests(res)
-            console.log(res);
+          if(response.status === 200){
+            const filter = res.filter((r) =>{return r.reuestedAccountId === userData._id;})
+            console.log(filter);
+            setMyRequests(filter)
+        }
     }
     const getMyService = async() =>{
         const response = await fetch('http://localhost:5000/service/myservice',{
@@ -119,7 +121,7 @@ function Profile({ userData, setUserLoggedin }) {
                 <p>{userData.username}</p>
             </div>
 
-            {myRequests && <div>
+            {myRequests && myRequests.length !==0 && <div>
                 <h5>My Requests</h5>
                 <div className='myservice'>
                     {myRequests.reverse().map((req, index)=>{

@@ -48,7 +48,7 @@ function App() {
         {/* <Route path='/' element={userLoggedin?  `${userData.accountType === 0 ? <Services/> : <Navigate to='/profile'/>}` : <Login setUserLoggedin={setUserLoggedin}/>}/> */}
         <Route path='/signup' element={<Signup setUserLoggedin={setUserLoggedin}/>} />
         <Route path='/requests' element={<RequestPage userData={userData} />} />
-        <Route path='/' element={userLoggedin? <Services socket={socket}/>  : <Login setUserLoggedin={setUserLoggedin}/>}/>
+        <Route path='/' element={userLoggedin? <Services userData={userData} socket={socket}/>  : <Login setUserLoggedin={setUserLoggedin}/>}/>
         <Route path='/profile' element={userLoggedin? <Profile userData={userData} setUserLoggedin={setUserLoggedin}/> :  <Login setUserLoggedin={setUserLoggedin}/>}/>
         <Route path='/services' element={<Navigate to='/'/>}/>
       </Routes>
